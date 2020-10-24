@@ -1,0 +1,111 @@
+<html>
+
+	<head>
+		<meta charset='utf8'>
+	</head>
+
+	<body>
+
+		<div class="split left">
+			<h2>Adding a User</h2>
+		<form method="POST" action="/user/add">
+			<input type="text" name="user" placeholder="Name">
+			<input type="submit" value="Add">
+		</form>
+		
+		<h1>Registered Users</h1>
+
+			{% for user in users %}
+				<div class="userblock">
+					<h3>ID: {{user.id}}</h3>
+					<h3>Name: {{user.name}}</h3>
+					<h3>Roles:</h3>
+					{% for role in user.roles %}
+						<form method="POST" action="/user/roles/delete">
+							<input type="hidden" name='id' value="{{user.id}}">
+							<input type="hidden" name='role'value="{{role}}">
+							<input type="submit" value="x">
+							<span>{{roles[role]}}</span>
+						</form>
+					{% endfor %}
+					<form method="POST" action="/user/roles/add">
+						<input type="hidden" value={{user.id}} name="id">
+						<select id="select_{{user.id}}" name="newRole">
+							{% for role in roles %}
+								<option value="{{role}}">{{roles[role]}}</option>
+							{% endfor %}
+						</select>
+						<input type="submit" value="Add New Role">
+					</form>
+					<form method="POST" action="/users/delete">
+						<input type="hidden", value="{{user.id}}">
+						<input type="submit" value="Delete This User">
+					</form>
+				</div>
+			{% endfor %}
+		</div>
+			
+		
+
+			<div class="split right">
+		<h2>Adding a Role</h2>
+		<form method="POST" action="/roles/add">
+			<input type="text" name="role" placeholder="Name">
+			<input type="submit" value="Add">
+		</form>
+			<h1>Registered Roles</h1>
+
+			{% for role in roles.keys() %}
+				<div class="userblock">
+					<h3>ID: {{role}}</h3>
+					<h3>Name: {{roles[role]}}</h3>
+					<form method="POST" action="/roles/delete">
+						<input type="hidden" name="id" value={{role}}>
+						<input type="submit" value="Delete This Role">
+					</form>
+				</div>
+			{% endfor %}
+		</div>
+
+		
+		
+
+	</body>
+
+	<style>
+		.userblock {
+			padding:10px;
+			margin:5px;
+			background: lightgrey
+		}
+
+		p {
+			margin: 3px;
+		}
+		h3 {
+			margin: 3px;
+		}
+
+		.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+}
+
+	</style>
+
+</html>
