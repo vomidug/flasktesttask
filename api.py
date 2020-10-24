@@ -6,8 +6,6 @@ from flask_migrate import Migrate
 from flask import redirect
 
 from flask_sqlalchemy import SQLAlchemy
-#project_dir = os.path.dirname(os.path.abspath(__file__))
-#database_file = "sqlite:///{}".format(os.path.join(project_dir, "bookdatabase.db"))
 
 app = Flask(__name__)
 
@@ -41,14 +39,10 @@ def home():
     for role in list(roles):
         result[role.id] = role.name
 
-    for user in list(users):
-        print(user.roles)
-
     return render_template("home.html", users=users, roles=result)
 
 @app.route("/user/add", methods=["POST"])
 def addUser():
-    print(request.form.get('user'))
     user = User(name=request.form.get('user'))
     db.session.add(user)
     db.session.commit()
@@ -59,11 +53,9 @@ def addUser():
 def update():
     id = request.form.get("id")
     newRole = request.form.get("newRole")
-    print(type(newRole))
     user = User.query.filter_by(id=id).first()
     roles = user.roles
     roles.append(int(newRole))
-    print(roles)
     User.query.filter_by(id=id).update({'roles':roles})
     db.session.commit()
     return redirect("/")
@@ -74,8 +66,6 @@ def deleteRoleFromUser():
     deletingRole = request.form.get("role")    
     user = User.query.filter_by(id=id).first()
     roles = user.roles
-    print(roles)
-    print(deletingRole)
     roles.remove(int(deletingRole))
     User.query.filter_by(id=id).update({'roles':roles})
     db.session.commit()
@@ -102,11 +92,7 @@ def deleteRole():
         roles = user.roles
         if (int(id) in roles):
             roles.remove(int(id))
-            print("Opa Opa!")
-            print(int(id))
-            print(roles)
             User.query.filter_by(id=id).update({'roles':roles}) # kostyl as fuck :(
-
 
     db.session.delete(role)
     db.session.commit()

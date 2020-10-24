@@ -1,4 +1,4 @@
 #!/bin/bash
 docker network create flask;
-docker volume create sqlite;
+docker volume create postgres;
 docker-compose up -d 

@@ -9,12 +9,12 @@ services:
     - 8080:8080
 
   db:
-    image: nouchka/sqlite3
+    image: postgres
     volumes:
-    - sqlite:/root/db
+    - postgres:/var/lib/postgresql
 
 volumes:
-  sqlite:
+  postgres:
     external: true
 networks:
   flask:
