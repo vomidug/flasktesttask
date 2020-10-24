@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  api:
+    build: ./
+    restart: unless-stopped
+    networks:
+    - flask
+
+  db:
+    image: nouchka/sqlite3
+    volumes:
+    - sqlite:/root/db
+
+volumes:
+  sqlite:
+    external: true
+networks:
+  flask:
+    external: true
